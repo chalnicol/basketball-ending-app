@@ -11,12 +11,19 @@ export default {
     ],
 
     theme: {
+       
         extend: {
+            aspectRatio: {
+                'card' : '9 / 16'
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
+            }
+            
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms
+    ],
 };
