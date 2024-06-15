@@ -5,7 +5,15 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Models\Card;
+
 Route::get('/', function () {
+
+    // Check if the user is authenticated
+    if (auth()->check()) {
+        return redirect('/home');
+    }
+    
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -15,12 +23,15 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return Inertia::render('Home');
+    return Inertia::render('Home',[
+        'user' => auth()->user(),
+        'cards' =>  Card::with('slots')->get(),
+    ]);
 })->middleware(['auth', 'verified'])->name('home');
 
-Route::get('/users', function () {
-    return Inertia::render('Users');
-})->middleware(['auth', 'verified'])->name('users');
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->middleware(['auth', 'verified'])->name('about');
 
 
 Route::middleware('auth')->group(function () {

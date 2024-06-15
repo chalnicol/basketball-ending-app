@@ -20,6 +20,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "@tailwindcss/aspect-ratio": "^0.4.2"
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "moment": "^2.30.1"
     }
 }

@@ -13,17 +13,13 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->string('reference_id', length: 100 );
-            $table->text('winning_prize');
-            $table->text('winning_prize');
-            $table->text('winning_prize');
-            $table->text('winning_prize');
-
+            $table->string('reference_id', length: 50 )->unique();
+            $table->string('game');
+            $table->string('status');
+            $table->decimal('winning_prize', total: 8, places: 2);
+            $table->decimal('price_per_slot', total: 8, places: 2);
             $table->date('game_date');
-            $table->foreignIdFor(User::class);
-
-
-            $table->string('email')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

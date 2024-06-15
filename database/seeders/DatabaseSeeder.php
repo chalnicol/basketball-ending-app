@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Card;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +16,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+
+        for ($i = 1; $i < 9; $i++) {
+
+            $card = Card::factory()->create();
+
+            for ($j = 0; $j < 100; $j++) {
+                $card->slots()->create([
+                    'number' => $j,
+                    'card_id' => $card->id,
+                ]);
+            }
+
+        }
     }
 }
