@@ -1,19 +1,14 @@
 <template>
 
-    <div class="border border-gray-500 shadow-lg rounded-lg text-sm overflow-hidden">
-        <div class="bg-gray-800 text-white p-3">
-            Card ID : <strong>{{ card.reference_id }}</strong>
+    <div class="border border-gray-300 shadow-sm rounded-lg text-sm overflow-hidden select-none cursor-pointer hover:shadow-lg" @click="showCard(card.id)">
+        <div :class="[ card.status == 'Active' ? 'bg-green-500' : 'bg-orange-400', 'p-3', 'text-white']">
+            Ref. ID : <strong>{{ card.reference_id }}</strong>
         </div>
         
-        <div class="p-3">
-            Game : <strong>{{ card.game }}</strong><br>
-            Winning Prize : <strong>&#8369;{{ formatNumber(card.winning_prize, 'en-US') }}.00</strong><br>
-            Price Per Slot : <strong>&#8369;{{ card.price_per_slot }}</strong><br>
-            Game Date : <strong>{{ formatDate(card.game_date) }}</strong><br>
-            Slot Remaining: <strong>100</strong><br>
-            <hr class="my-2">
-            Status : <span :class="[ card.status == 'Active' ? 'bg-green-400' : 'bg-orange-300', 'p-1', 'rounded']"><strong>{{ card.status }}</strong></span><br>
+        <div class="p-3 mb-2">
+           <CardContent :card="card" />
         </div>
+
     </div>
 
 </template>
@@ -22,7 +17,9 @@
 <script setup>
     import moment from 'moment';
     import { defineProps } from 'vue';
-  
+    import { router } from '@inertiajs/vue3'
+    import CardContent from '@/Components/CardContent.vue';
+
     const props = defineProps({
         card: {
             type: Object,
@@ -30,13 +27,14 @@
         }
     })
 
-    const formatNumber = (number, locale = 'en-US') => {
-        return new Intl.NumberFormat(locale).format(number);
-    };
+    
+    const showCard = (id) => {
+        console.log (id)
+        router.visit(`/cards/${id}`, { method: 'get' });
+    }
 
-    const formatDate = (date) => {
-        return moment(date).format('MMMM D, YYYY - dddd');
-    };
+    
+
 
 </script>
 

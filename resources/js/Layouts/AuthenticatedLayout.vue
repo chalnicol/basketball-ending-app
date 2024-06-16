@@ -24,6 +24,8 @@ const showingNavigationDropdown = ref(false);
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
+                                    <!-- <span class="text-lg text-gray-500">Basketball Ending</span> -->
+                                    
                                 </Link>
                             </div>
 

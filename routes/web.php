@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\PagesController;
+
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,31 +17,34 @@ Route::get('/', function () {
     if (auth()->check()) {
         return redirect('/home');
     }
-    
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+
 });
 
-Route::get('/home', function () {
-    return Inertia::render('Home',[
-        'user' => auth()->user(),
-        'cards' =>  Card::with('slots')->get(),
-    ]);
-})->middleware(['auth', 'verified'])->name('home');
-
-Route::get('/about', function () {
-    return Inertia::render('About');
-})->middleware(['auth', 'verified'])->name('about');
+// Route::get('/about', function () {
+//     return Inertia::render('About');
+// })->middleware(['auth', 'verified'])->name('about');
 
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/home', [PagesController::class, 'home'])->name('home');
+    Route::get('/about', [PagesController::class, 'about'])->name('about');
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/cards/{id}', [CardController::class, 'show'])->name('cards.show');
+
+
 });
 
 require __DIR__.'/auth.php';
