@@ -4,40 +4,30 @@
     <Head title="Home" />
 
     <AuthenticatedLayout>
-        <template #header>
+        <!-- <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Home</h2>
         </template>
+        -->
 
-       
         <div class="max-w-7xl mx-auto mt-2">
 
-            <!-- <div class="bg-white overflow-hidden my-2 shadow-sm sm:rounded-md bg-green-300">
-                <div class="px-5 py-3 text-gray-900">Welcome, {{ user.name }}!</div>
-            </div> -->
-
             <div class="p-6 border border-dark-300 mt-1 max-w-full bg-white">
-                <!-- <CardParent/> -->
-                 <div class="mb-2">
-                    <span class="text-lg"><strong>Active Cards</strong></span>
-                 </div>
-                 <hr class="border-gray-300 my-3">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <CardDetails v-for="(card, index) in activeCards" :key="index" :card="card" />
+
+                <h1 class="font-bold text-1xl mb-2">Cards</h1>
+                <hr>
+
+                <div v-if="cards.length > 0" class="my-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <CardThumbnail v-for="(card, index) in cards" :key="index" :card="card" />
+                    </div>
                 </div>
+                <template v-else>
+                    <div class="my-3 px-1">
+                        <span>Nothing to display.</span>
+                    </div>
+                </template>
+               
 
-                <br>
-
-                <div class="mb-2">
-                    <span class="text-lg"><strong>Pending Cards</strong></span>
-                 </div>
-                 <hr class="border-gray-300 my-3">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <CardDetails v-for="(card, index) in pendingCards" :key="index" :card="card" />
-                </div>
-
-                <br>
                 
             </div>
 
@@ -52,36 +42,34 @@
 <script setup>
 
     import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-    import CardDetails from '@/Components/CardDetails.vue';
+    import CardThumbnail from '@/Components/CardThumbnail.vue';
     import { Head, usePage } from '@inertiajs/vue3';
 
     import { ref } from 'vue'
     
     const { user, cards } = usePage().props;
 
+    const currentTable = ref('active');
+
+
+
     // Separate cards into active and pending arrays
     const activeCards = ref([]);
     const pendingCards = ref([]);
 
     cards.forEach(card => {
-        if (card.status === 'Active') {
+        if (card.status === 'active') {
             activeCards.value.push(card);
-        } else if (card.status === 'Pending') {
+        } else if (card.status === 'pending') {
             pendingCards.value.push(card);
         }
     });
 
-    
-    // const props = defineProps({
-    //     cards: {
-    //         type : Array,
-    //         required: true,
-    //     },
-    //     user : {
-    //         type: Object,
-    //         required: true,
-    //     },
-    // })
+    const isCurrrentTab = ( tab ) => {
+        return currentTable.value === tab;
+    }
+
+    console.log(isCurrrentTab('active'));
 
     // import { ref, onMounted } from 'vue';
     // import axios from 'axios'

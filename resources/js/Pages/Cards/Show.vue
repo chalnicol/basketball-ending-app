@@ -4,25 +4,44 @@
 
    <AuthenticatedLayout>
        
-       <template #header>
+       <!-- <template #header>
            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Show Card</h2>
-       </template>
+       </template> -->
 
-       <div class="max-w-7xl mx-auto mt-2 bg-white px-3">
+       <div class="max-w-7xl mx-auto mt-2 bg-white px-3 pb-3">
 
-        <div class="w-full flex justify-between items-center">
-            <h1 class="p-2 md:p-6 text-md md:text-2xl font-bold">Reference ID : {{ card.reference_id }}</h1>
-            <div class="mx-6 px-3 py-2 bg-gray-200 rounded-lg font-bold">
-                {{ card.status }}
+        <div class="lg:flex p-2 md:p-6">
+
+            <div class="md:mr-6">
+                <div>
+                    <div class="mb-4">
+                        <span class="font-bold text-xl mr-2"> Reference ID :</span> <br>
+                        <span class="text-md text-gray-500">{{ card.reference_id }}</span>
+                    </div>
+
+                    <CardDetails :card="card"/>
+                </div>
+
+                <div class="text-sm text-gray-500 md:max-w-72 my-6">
+                    <div class="mb-2">Note: Please pick slots and when done hit the save button.</div>
+
+                    <button class="border font-bold py-2 text-lg md:text-md rounded-md w-full custom-button" @click="updateCard" :disabled="isDisabled" >SAVE</button>
+                
+                </div>
             </div>
+            <CardSlots :slots="card.slots" class="grow mt-4 md:mt-0" @emit-data="handleData"/>
+            
+            
         </div>
 
-        <hr class="border-b-1 shadow-lg">
-        <div class="flex flex-col lg:flex-row gap-5 content-center justify-start p-2 md:p-6">
-            <CardContent :card="card" class="lg:w-1/3"/>
-            <CardSlots :slots="card.slots" />
-        </div>
        </div>
+
+        <!-- <Modal :show="isShown" :closeable="true" >
+            <div class="p-3">
+                <p>Are you sure to own the slots below?</p>
+                <div></div>
+            </div>
+        </Modal> -->
 
    </AuthenticatedLayout>
 
@@ -32,9 +51,14 @@
 
    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
    import { Head } from '@inertiajs/vue3';
-   import { defineProps } from 'vue';
+   import { ref, defineProps, computed } from 'vue';
    import CardSlots from '@/Components/CardSlots.vue';
-   import CardContent from '@/Components/CardContent.vue';
+   import Modal from '@/Components/Modal.vue';
+
+   import CardDetails from '@/Components/CardDetails.vue';
+
+   import { router } from '@inertiajs/vue3'
+
 
     //..
     defineProps ({
@@ -44,4 +68,63 @@
         }
     });
 
+    // const isShown = ref(false);
+
+    const selectedSlots = ref([]);
+    
+    const isDisabled = computed(() => {
+        return selectedSlots.value.length === 0;
+    });
+
+    const toPass = ref([]);
+
+
+    const updateCard = () => {
+
+        selectedSlots.value.forEach(slot => {
+            toPass.value.push(slot.id);
+        });
+
+        // console.log('this is clicked', toPass.value);
+
+        router.visit ('/slots', {
+            method: 'patch',
+            data : {
+                toPass : toPass.value
+            },
+            preserveScroll : true,
+            onSuccess : () => {
+                console.log ('this is done');
+            }
+        }); 
+    };
+
+
+
+
+    
+    const handleData = (data) => {
+        // console.log ('asdf', data);
+        selectedSlots.value = data;
+    };
+
+   
+
 </script>
+
+<style scoped>
+    .custom-button {
+        background-color: black;
+        color: white;
+        padding: 10px;
+    }
+    .custom-button:disabled {
+        background-color: #4e4e4e;
+        opacity: 0.5;
+    }
+    .custom-button:hover:not(:disabled) {
+        background-color: #2e2e2e;
+        cursor: pointer;
+    }
+
+</style>

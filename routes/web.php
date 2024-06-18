@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\SlotController;
+
 
 
 use Illuminate\Foundation\Application;
@@ -43,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/cards/{id}', [CardController::class, 'show'])->name('cards.show');
+
+    Route::patch('/slots', [SlotController::class, 'update'])->name('slots.update');
+
 
 
 });

@@ -32,76 +32,48 @@ defineProps({
     <Head title="Welcome" />
      
 
-    <div class="h-screen bg-gray-100 flex justify-center items-center">
+    <div class="h-screen bg-gray-300 flex justify-center items-center">
 
-        <div class="w-11/12 md:w-1/2 lg:w-1/3 bg-white border border-gray-300 rounded-md p-3 shadow-lg flex flex-col justify-center items-center">
+        <div class="w-11/12 md:w-1/2 lg:w-1/3 bg-white border border-gray-300 rounded-md p-3 shadow-lg flex flex-col justify-center items-center" style="max-width: 550px;">
             
 
-            <div class="w-full flex justify-end">
-
-                <nav v-if="canLogin">
-                    <Link
-                        :href="route('login')"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
-                    >
-                        Log in
-                    </Link>
-
-                    <Link
-                        v-if="canRegister"
-                        :href="route('register')"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
-                    >
-                        Register
-                    </Link>
-                </nav>
-            </div>
-
-            <br>
+          
 
             <ApplicationLogo class="w-20"/>
             
             <h1 class="text-3xl font-bold">BasketBall Ending</h1>
+            <p class="text-sm text-orange-500 my-1">Gambling House of Chalnicol @2024</p>
 
-            
-            
+            <hr class="border border-red-500">
+            <div class="w-11/12 my-4">
 
-            <div class="text-xs text-orange-500 py-1 mb-5">
-                Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }}) 
-            </div>
-            
-
-        </div>
-
-        <!-- <nav v-if="canLogin" class="flex flex-1 justify-end bg-white p-2 border-b-2">
-                <Link
-                    v-if="$page.props.auth.user"
-                    :href="route('home')"
-                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
-                >
-                    Home
-                </Link>
-
-                <template v-else>
+                <nav v-if="canLogin" class="grid grid-cols-2 gap-2">
                     <Link
                         :href="route('login')"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        class="font-bold text-center border border-gray-500 rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
-                        Log in
+                        LOG IN
                     </Link>
 
                     <Link
                         v-if="canRegister"
                         :href="route('register')"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        class="font-bold text-center border border-gray-500 rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
-                        Register
+                        REGISTER
                     </Link>
-                </template>
-        </nav>
+                </nav>
 
-           -->
+            </div>
 
+            <!-- <div class="text-xs text-orange-500 py-1">
+                Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }}) 
+            </div> -->
+
+        
+        </div>
+
+     
         
     </div>
 

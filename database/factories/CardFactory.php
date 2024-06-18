@@ -35,8 +35,8 @@ class CardFactory extends Factory
 
         return [
             'reference_id' => $timestamp . '-' . $randomString,
-            'game' => $teamsPlaying[0] . ' vs ' . $teamsPlaying[1],
-            'status' => $this->faker->randomElement(['Active', 'Pending']),
+            'game' => $teamsPlaying[0] . ' vs. ' . $teamsPlaying[1],
+            'status' => $this->faker->randomElement(['active', 'pending']),
             'winning_prize' => ($pricePerSlot * 100) -  ( ($pricePerSlot * 100) * 0.2 ),
             'price_per_slot' => $pricePerSlot,
             'game_date' => $randomDate,
