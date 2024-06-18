@@ -10,29 +10,46 @@
 
        <div class="max-w-7xl mx-auto mt-2 bg-white px-3 pb-3">
 
-        <div class="lg:flex p-2 md:p-6">
+            <div class="lg:flex px-3 py-5">
 
-            <div class="md:mr-6">
-                <div>
-                    <div class="mb-4">
-                        <span class="font-bold text-xl mr-2"> Reference ID :</span> <br>
-                        <span class="text-md text-gray-500">{{ card.reference_id }}</span>
+                <div class="lg:w-1/4 lg:mr-5 flex flex-col md:flex-row lg:flex-col items-start md:items-end lg:items-start  mb-0 md:mb-6 lg:mb-0">
+
+                    <div class="lg:mb-6 mr-0 md:mr-8 lg:mr-0">
+                        <div class="mb-4">
+                            <span class="font-bold text-xl"> Reference ID :</span> <br>
+                            <span class="text-md text-gray-500">{{ card.reference_id }}</span>
+                        </div>
+
+                        <CardDetails :card="card"/>
                     </div>
 
-                    <CardDetails :card="card"/>
+                    <div>
+
+                        
+                        <div class="mb-4 leading-relaxed">                
+                            
+                            Current Slots Owned : <strong>{{ slotsOwned }}</strong><br>
+
+                            Current Slots Picked : <strong>{{ currentSlotsPicked }}</strong><br>
+
+                        
+                            Amount Total  : <strong>&#8369;{{  totalAmountOfCurrentSlotsPicked }}. 00 *</strong><br>
+                            <span class="text-xs text-rose-500">* to be deducted to your cash balance</span>
+                            
+                        </div>
+
+                        <div class="mb-2 text-gray-500 text-sm">Please pick slots and when done hit the save button.</div>
+
+                        <button class="border font-bold py-2 text-lg md:text-md rounded-md w-full custom-button" @click="updateCard" :disabled="!hasSlotsPicked" >SAVE</button>
+                    
+                    </div>
+
                 </div>
 
-                <div class="text-sm text-gray-500 md:max-w-72 my-6">
-                    <div class="mb-2">Note: Please pick slots and when done hit the save button.</div>
-
-                    <button class="border font-bold py-2 text-lg md:text-md rounded-md w-full custom-button" @click="updateCard" :disabled="isDisabled" >SAVE</button>
+                <CardSlots :slots="card.slots" class="grow mt-4 md:mt-0" @emit-data="handleData"/>
                 
-                </div>
+                
             </div>
-            <CardSlots :slots="card.slots" class="grow mt-4 md:mt-0" @emit-data="handleData"/>
-            
-            
-        </div>
 
        </div>
 
@@ -61,23 +78,36 @@
 
 
     //..
-    defineProps ({
+    const props = defineProps ({
         card: {
             type: Object,
             required: true
-        }
+        },
+        user_id : Number,
     });
 
     // const isShown = ref(false);
 
+    const slotsOwned = computed(() => {
+        return props.card.slots.filter (slot => slot.owner_id === props.user_id ).length;
+    });
+
+    const currentSlotsPicked = computed(() => {
+        return selectedSlots.value.length;
+    });
+
+    const totalAmountOfCurrentSlotsPicked = computed(() => {
+        return selectedSlots.value.length * props.card.price_per_slot;
+    });
+
+
     const selectedSlots = ref([]);
     
-    const isDisabled = computed(() => {
-        return selectedSlots.value.length === 0;
+    const hasSlotsPicked = computed(() => {
+        return selectedSlots.value.length > 0;
     });
 
     const toPass = ref([]);
-
 
     const updateCard = () => {
 
@@ -99,17 +129,12 @@
         }); 
     };
 
-
-
-
-    
     const handleData = (data) => {
         // console.log ('asdf', data);
         selectedSlots.value = data;
     };
 
    
-
 </script>
 
 <style scoped>

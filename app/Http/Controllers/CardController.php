@@ -15,6 +15,7 @@ class CardController extends Controller
         $card = Card::with(['slots.owner'])->findOrFail($id);
 
         return Inertia::render('Cards/Show', [
+            'user_id' => auth()->user()->id,
             'card' => $card
         ]);
     }

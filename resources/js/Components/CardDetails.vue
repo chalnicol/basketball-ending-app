@@ -8,7 +8,7 @@
             Game Date : <strong>{{ formatDate(card.game_date) }}</strong><br>
             Available Slots : <strong>{{ availableSlots }}</strong><br>
         </div>
-        <hr>
+        <hr class="border-t border-b-0 border-zinc-400">
         <div class="flex items-center border-gray-300 mt-2">
             <div class="me-3">Status : <span :class="['font-bold', card.status === 'active' ? 'text-green-800' : 'text-orange-500']"> {{ capitalize(card.status) }} </span> </div>
         </div>
